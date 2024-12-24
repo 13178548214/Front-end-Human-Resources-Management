@@ -30,7 +30,7 @@ V3 Admin Vite 是一个免费开源的中后台管理系统基础解决方案，
 ## 使用
 
 <details>
-<summary>推荐环境</summary>
+<summary>推荐</summary>
 
 <br>
 

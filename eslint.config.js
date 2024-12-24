@@ -1,42 +1,77 @@
-import antfu from "@antfu/eslint-config"
-
-// 更多自定义配置可查阅仓库：https://github.com/antfu/eslint-config
-export default antfu(
-  {
-    // 使用外部格式化程序格式化 css、html、markdown 等文件
-    formatters: true,
-    // 启用样式规则
-    stylistic: {
-      // 缩进级别
-      indent: 2,
-      // 引号风格 'single' | 'double'
-      quotes: "double",
-      // 是否启用分号
-      semi: false
-    },
-    // 忽略文件
-    ignores: []
-  },
-  {
-    // 对所有文件都生效的规则
-    rules: {
-      // vue
-      "vue/block-order": ["error", { order: ["script", "template", "style"] }],
-      "vue/attributes-order": "off",
-      // ts
-      "ts/no-use-before-define": "off",
-      // node
-      "node/prefer-global/process": "off",
-      // style
-      "style/comma-dangle": ["error", "never"],
-      "style/brace-style": ["error", "1tbs"],
-      // regexp
-      "regexp/no-unused-capturing-group": "off",
-      // other
-      "no-console": "off",
-      "no-debugger": "off",
-      "symbol-description": "off",
-      "antfu/if-newline": "off"
+export default {
+/*     "languageOptions": {
+      "globals": {
+        "window": "readonly",
+        "document": "readonly",
+        "process": "readonly",
+        "Buffer": "readonly"
+      }
+  }, */
+/*   extends: [
+    "plugin:vue/vue3-essential",
+    "eslint:recommended",
+    "@vue/typescript/recommended",
+    "@vue/prettier",
+    "@vue/eslint-config-typescript"
+  ],
+  parser: "vue-eslint-parser",
+  parserOptions: {
+    parser: "@typescript-eslint/parser",
+    ecmaVersion: 2020,
+    sourceType: "module",
+    jsxPragma: "React",
+    ecmaFeatures: {
+      jsx: true,
+      tsx: true
     }
-  }
-)
+  }, */
+/*   rules: {
+    // TS
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-debugger": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_"
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_"
+      }
+    ],
+    // Vue
+    "vue/no-v-html": "off",
+    "vue/require-default-prop": "off",
+    "vue/require-explicit-emits": "off",
+    "vue/multi-word-component-names": "off",
+    "vue/html-self-closing": [
+      "error",
+      {
+        html: {
+          void: "always",
+          normal: "always",
+          component: "always"
+        },
+        svg: "always",
+        math: "always"
+      }
+    ],
+    // Prettier
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto"
+      }
+    ]
+  } */
+}
