@@ -1,4 +1,4 @@
-import { pinia } from "@/pinia"
+import  pinia  from "@/pinia"
 import { DeviceEnum, SIDEBAR_CLOSED, SIDEBAR_OPENED } from "@@/constants/app-key"
 import { getSidebarStatus, setSidebarStatus } from "@@/utils/cache/local-storage"
 

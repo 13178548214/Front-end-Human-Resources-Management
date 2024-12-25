@@ -10,6 +10,8 @@ import NProgress from "nprogress"
 
 NProgress.configure({ showSpinner: false })
 const { setTitle } = useTitle()
+console.log(1);
+
 
 export function registerNavigationGuard(router: Router) {
   // 全局前置守卫
@@ -18,6 +20,8 @@ export function registerNavigationGuard(router: Router) {
     const userStore = useUserStore()
     const permissionStore = usePermissionStore()
     // 如果没有登陆
+    console.log(2);
+
     if (!getToken()) {
       // 如果在免登录的白名单中，则直接进入
       if (isWhiteList(to)) return true
@@ -29,6 +33,8 @@ export function registerNavigationGuard(router: Router) {
     // 如果用户已经获得其权限角色
     if (userStore.roles.length !== 0) return true
     // 否则要重新获取权限角色
+    console.log(3);
+
     try {
       await userStore.getInfo()
       // 注意：角色必须是一个数组！ 例如: ["admin"] 或 ["developer", "editor"]

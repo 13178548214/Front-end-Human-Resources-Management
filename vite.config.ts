@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 
 import { resolve } from "node:path"
 import vue from "@vitejs/plugin-vue"
@@ -40,7 +41,8 @@ export default defineConfig(({ mode }) => {
           // 是否为 WebSocket
           ws: false,
           // 是否允许跨域
-          changeOrigin: true
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/v1/, '')
         }
       },
       // 是否允许跨域

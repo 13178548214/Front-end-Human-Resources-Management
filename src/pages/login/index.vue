@@ -28,7 +28,7 @@ const codeUrl = ref("")
 
 /** 登录表单数据 */
 const loginFormData: LoginRequestData = reactive({
-  username: "admin",
+  username: "1",
   password: "12345678",
 })
 
@@ -51,7 +51,7 @@ function handleLogin() {
       return
     }
     loading.value = true
-    loginApi(loginFormData).then(({ data }) => {
+    loginApi(loginFormData).then(( {data} ) => {
       userStore.setToken(data.token)
       router.push("/")
     }).catch(() => {

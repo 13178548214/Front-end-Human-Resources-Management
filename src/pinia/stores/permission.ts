@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router"
-import { pinia } from "@/pinia"
+import  pinia  from "@/pinia"
 import { constantRoutes, dynamicRoutes } from "@/router"
 import { routerConfig } from "@/router/config"
 import { flatMultiLevelRoutes } from "@/router/helper"
