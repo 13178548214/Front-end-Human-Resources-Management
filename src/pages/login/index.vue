@@ -53,6 +53,7 @@ function handleLogin() {
     loading.value = true
     loginApi(loginFormData).then(( {data} ) => {
       userStore.setToken(data.token)
+      userStore.setUserId(data.id)
       router.push("/")
     }).catch(() => {
       loginFormData.password = ""

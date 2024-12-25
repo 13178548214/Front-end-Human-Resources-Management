@@ -5,6 +5,7 @@ export interface LoginRequestData {
   password: string
 }
 
+
 export type LoginCodeResponseData = ApiResponseData<string>
 
-export type LoginResponseData = ApiResponseData<{ token: string }>
+export type LoginResponseData = ApiResponseData<{ token: string,id:string }>

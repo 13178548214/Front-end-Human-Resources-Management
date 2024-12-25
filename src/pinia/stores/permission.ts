@@ -4,6 +4,7 @@ import { constantRoutes, dynamicRoutes } from "@/router"
 import { routerConfig } from "@/router/config"
 import { flatMultiLevelRoutes } from "@/router/helper"
 
+
 function hasPermission(roles: string[], route: RouteRecordRaw) {
   const routeRoles = route.meta?.roles
   return routeRoles ? roles.some(role => routeRoles.includes(role)) : true
@@ -38,6 +39,8 @@ export const usePermissionStore = defineStore("permission", () => {
 
   // 所有路由 = 所有常驻路由 + 所有动态路由
   const setAllRoutes = () => {
+    console.log(5);
+
     set(dynamicRoutes)
   }
 
@@ -48,7 +51,11 @@ export const usePermissionStore = defineStore("permission", () => {
   }
 
   return { routes, addRoutes, setRoutes, setAllRoutes }
-})
+},
+  {
+    persist:true
+  }
+)
 
 /**
  * @description 在 SPA 应用中可用于在 pinia 实例被激活前使用 store
