@@ -64,12 +64,29 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/pepole",
+    component: Layouts,
+    redirect: "/pepoleManger",
+    children: [
+      {
+        path: "pepoleManger",
+        component: () => import("@/pages/pepoleManger/create/create.vue"),
+        name: "create",
+        meta: {
+          title: "创建人力资源",
+          svgIcon: "dashboard",
+          affix: true
+        }
+      }
+    ]
+  },
+ /*  {
     path: "/demo",
     component: Layouts,
     redirect: "/demo/unocss",
     name: "Demo",
     meta: {
-      title: "示例集合",
+      title: "人力资源管理",
       elIcon: "DataBoard"
     },
     children: [
@@ -180,7 +197,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       }
     ]
-  }
+  } */
 ]
 
 /**
@@ -198,7 +215,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       title: "权限演示",
       elIcon: "Lock",
       // 可以在根路由中设置角色
-      roles: ["personalStaff ", "personalManager","salaryStaff","salaryManager"],
+      roles: ["personalStaff", "personalManager","salaryStaff","salaryManager"],
       alwaysShow: true
     },
     children: [
@@ -209,7 +226,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           title: "页面级",
           // 或者在子路由中设置角色
-          roles: ["personalStaff ", "personalManager","salaryStaff","salaryManager"]
+          roles: ["personalStaff", "personalManager","salaryStaff","salaryManager"]
         }
       },
       {
@@ -238,6 +255,8 @@ export function resetRouter() {
     // 注意：所有动态路由路由必须带有 Name 属性，否则可能会不能完全重置干净
     router.getRoutes().forEach((route) => {
       const { name, meta } = route
+      console.log(meta.roles);
+
       if (name && meta.roles?.length) {
         router.hasRoute(name) && router.removeRoute(name)
       }
