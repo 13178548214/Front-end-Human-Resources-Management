@@ -1,78 +1,87 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import {getPrimaryStructure,getSecondaryStructure,getThirdStructure,getJobCategory,getJobName,createHumanResources} from '@/common/apis/pepole/index'
+import {getSalaryStandard,getPrimaryStructure,getSecondaryStructure,getThirdStructure,getJobCategory,getJobName,createHumanResources} from '@/common/apis/pepole/index'
 import { ElForm, FormInstance,UploadRawFile } from 'element-plus';
-import { tr } from 'element-plus/es/locales.mjs';
-/** 一级机构 */
-const primaryStructureId = ref('')
-/** 二级机构 */
-const secondaryStructureId = ref('')
-/** 三级机构 */
-const tertiaryStructureId = ref('')
-/** 职称分类 */
-const jobClassification = ref('')
+import { useUserStore } from '@/pinia/stores/user';
+
+const form = ref({
+  /** 一级机构 */
+  primaryStructureId: '01',
+  /** 二级机构 */
+  secondaryStructureId: '02',
+  /** 三级机构 */
+  tertiaryStructureId: '01',
+ /** 职称分类 */
+ jobClassification:'01',
 /** 职称名字 */
-const jobName = ref('')
+jobName :'01',
 /** 职称 */
-const jobTitle = ref('')
+ jobTitle :'01',
 /** 名字 */
-const name = ref('')
+ name :'欧哟',
 /** 邮件 */
-const email = ref('')
+ email :'',
 /** 性别 */
-const gender = ref('')
+ gender :'',
 /** 电话号码 */
-const phoneNumber = ref('')
+ phoneNumber :'13178548214',
 /** qq号码 */
-const qqNumber = ref('')
+ qqNumber :'',
 /** 手机 */
-const phoneNumber2 = ref('')
+ phoneNumber2 :'',
 /** 地址 */
-const address = ref('')
+ address : '',
 /** 邮编 */
-const postcode = ref('')
+ postcode :'',
 /** 国籍 */
-const country = ref('')
+ country  :'中国',
 /** 出生地 */
-const nationality = ref('')
+ nationality  :'',
 /** 生日 */
-const birthDate = ref('')
+ birthDate :'',
 /** 名族 */
-const family = ref('')
+ family :'汉族',
 /** 宗教信仰 */
-const religionFaith = ref('')
+ religionFaith :'',
 /** 政治面貌 */
-const partyMembers = ref('')
+ partyMembers :'',
 /** 身份证号 */
-const identificationNumber = ref('')
+ identificationNumber :'',
 /** 社保卡号 */
-const socialSecurityNumber = ref('')
+ socialSecurityNumber:'',
 /** 年龄 */
-const age = ref('')
+ age :'18',
 /** 学历 */
-const deggree = ref('')
+ deggree :'本科',
 /** 教育年限 */
-const educationYears = ref('')
+ educationYears :'9',
 /** 专业学历 */
-const education = ref('')
-/** 薪酬标准 */
-const RemunerationStandard = ref('')
-/** 开户行 */
-const openingBank = ref('')
+ education :'计算机',
+ /** 开户行 */
+ openingBank :'',
 /** 账号 */
-const bankAccount = ref('')
+ bankAccount :'',
 /** 特长 */
-const good = ref('')
+ good :'',
 /** 爱好 */
-const hobbys = ref('')
+ hobbys :'',
 /** 照片  */
-const image = ref('')
+ image :'',
 /** 个人履历 */
-const personalHistory = ref('')
+ personalHistory :'',
 /** 家庭关系信息 */
-const familyHistory = ref('')
+ familyHistory :'',
 /** 备注 */
-const remarks = ref('')
+ remarks :'',
+})
+
+/** 薪酬标准 */
+const RemunerationStandard =computed(() => {
+  const foundItem = salaryStandard.value?.find((item: any) => item.value === form.value.jobName);
+    if (foundItem) {
+      return`${foundItem.label}/${foundItem.money}`
+    }
+})
 
 /** 一级机构集合 */
 const primaryStructure = ref()
@@ -84,6 +93,8 @@ const thirdStructure = ref()
 const jobCategory = ref()
 /** 职位名称集合 */
 const jobNameList = ref()
+/** 薪酬标准集合 */
+const salaryStandard = ref<Array<any>>()
 
 /** 获取一级机构集合 */
 const getPrimaryStructureList = async () => {
@@ -113,6 +124,12 @@ const getJobCategoryList = async () => {
 const getJobNameList = async () => {
   const res = await getJobName()
   jobNameList.value = res.data
+}
+
+/** 获取薪酬标准 */
+const getRemunerationStandardList = async () => {
+  const res = await getSalaryStandard()
+  salaryStandard.value = res.data as any
 }
 
 /** 职称列表 */
@@ -324,11 +341,65 @@ const beforeAvatarUpload = (file: UploadRawFile) => {
 
 const input = ref('')
 
-const textarea = ref('')
 
-const submitForm = () => {
-  console.log(primaryStructureId.value);
+const submitForm = async() => {
+  if(!form.value.primaryStructureId){
+    ElMessage.error('请选择一级机构')
+    return
+  }
+  if(!form.value.secondaryStructureId){
+    ElMessage.error('请选择二级机构')
+    return
+  }
+  if(!form.value.tertiaryStructureId){
+    ElMessage.error('请选择三级机构')
+    return
+  }
+  if(!form.value.jobClassification){
+    ElMessage.error('请选择职位分类')
+    return
+  }
+  if(!form.value.jobName){
+    ElMessage.error('请选择职位名称')
+    return
+  }
+  if(!form.value.name){
+    ElMessage.error('请输入姓名')
+    return
+  }
+  if(!form.value.phoneNumber){
+    ElMessage.error('请输入手机号')
+    return
+  }
+  if(!form.value.country){
+    ElMessage.error('请选择国家')
+    return
+  }
+  if(!form.value.family){
+    ElMessage.error('请选择民族')
+    return
+  }
+  if(!form.value.deggree){
+    ElMessage.error('请选择学历')
+    return
+  }
+  if(!form.value.educationYears){
+    ElMessage.error('请选择教育年限')
+    return
+  }
+  if(!form.value.education){
+    ElMessage.error('请选择学历专业')
+    return
+  }
+  if(!imageUrl.value){
+    ElMessage.error('请上传照片')
+    return
+  }
+console.log(form.value);
+console.log(useUserStore().userId);
 
+await createHumanResources({...form.value,user:useUserStore().userId,image:imageUrl.value})
+ElMessage.success('创建成功')
 }
 
 // 获取当前日期并格式化为 yyyy-mm-dd
@@ -348,6 +419,7 @@ onMounted(() => {
   getThirdStructureList()
   getJobCategoryList()
   getJobNameList()
+  getRemunerationStandardList()
 })
 
 </script>
@@ -358,7 +430,7 @@ onMounted(() => {
       <div class="left">
       <el-row :gutter="20">
     <el-col :span="8" style="display: flex;">
-    <el-select  v-model="primaryStructureId" placeholder="一级机构">
+    <el-select  v-model="form.primaryStructureId" placeholder="一级机构">
     <el-option
       v-for="item in primaryStructure"
       :key="item.value"
@@ -369,7 +441,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="secondaryStructureId" placeholder="二级机构">
+      <el-select  v-model="form.secondaryStructureId" placeholder="二级机构">
     <el-option
       v-for="item in secondaryStructure"
       :key="item.value"
@@ -380,7 +452,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="tertiaryStructureId" placeholder="三级机构">
+      <el-select  v-model="form.tertiaryStructureId" placeholder="三级机构">
     <el-option
       v-for="item in thirdStructure"
       :key="item.value"
@@ -394,7 +466,7 @@ onMounted(() => {
       </el-row>
       <el-row :gutter="20">
     <el-col :span="8" style="display: flex;">
-    <el-select  v-model="jobClassification" placeholder="职位分类">
+    <el-select  v-model="form.jobClassification" placeholder="职位分类">
     <el-option
       v-for="item in jobCategory"
       :key="item.value"
@@ -405,7 +477,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="jobName" placeholder="职位名称">
+      <el-select  v-model="form.jobName" placeholder="职位名称">
     <el-option
       v-for="item in jobNameList"
       :key="item.value"
@@ -416,7 +488,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="jobTitle" placeholder="职称">
+      <el-select  v-model="form.jobTitle" placeholder="职称">
     <el-option
       v-for="item in jobList"
       :key="item.value"
@@ -429,10 +501,10 @@ onMounted(() => {
       </el-row>
       <el-row :gutter="20">
     <el-col :span="8" style="display: flex;">
-      <el-input v-model="name" placeholder="姓名"></el-input>
+      <el-input v-model="form.name" placeholder="姓名"></el-input>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="gender" placeholder="性别">
+      <el-select  v-model="form.gender" placeholder="性别">
     <el-option
       v-for="item in genderList"
       :key="item.value"
@@ -443,26 +515,26 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-input v-model="email" placeholder="EMALL"></el-input>
+      <el-input v-model="form.email" placeholder="EMALL"></el-input>
     </el-col>
       </el-row>
       <el-row :gutter="20">
     <el-col :span="8" style="display: flex;">
-      <el-input v-model="phoneNumber" placeholder="电话"></el-input>
+      <el-input v-model="form.phoneNumber" placeholder="电话"></el-input>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-input v-model="qqNumber" placeholder="QQ"></el-input>
+      <el-input v-model="form.qqNumber" placeholder="QQ"></el-input>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-input v-model="phoneNumber2" placeholder="手机"></el-input>
+      <el-input v-model="form.phoneNumber2" placeholder="手机"></el-input>
     </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="16" style="display: flex;">
-          <el-input v-model="address" placeholder="住址"></el-input>
+          <el-input v-model="form.address" placeholder="住址"></el-input>
         </el-col>
         <el-col :span="8" style="display: flex;">
-          <el-input v-model="postcode" placeholder="邮编"></el-input>
+          <el-input v-model="form.postcode" placeholder="邮编"></el-input>
         </el-col>
       </el-row>
     </div>
@@ -473,7 +545,7 @@ onMounted(() => {
   :show-file-list="false"
   :on-success="handleAvatarSuccess"
   :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <img v-if="imageUrl" :src="imageUrl" class="avatar" mode="aspectFill">
   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 </el-upload>
     </div>
@@ -481,7 +553,7 @@ onMounted(() => {
     <div class="middle">
       <el-row :gutter="20">
     <el-col :span="6" style="display: flex;">
-    <el-select  v-model="country" placeholder="国籍">
+    <el-select  v-model="form.country" placeholder="国籍">
     <el-option
       v-for="item in countryList"
       :key="item.value"
@@ -492,19 +564,19 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="nationality" placeholder="出生地"></el-input>
+      <el-input v-model="form.nationality" placeholder="出生地"></el-input>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="birthDate" placeholder="生日"></el-input>
+      <el-input v-model="form.birthDate" placeholder="生日"></el-input>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="family" placeholder="名族"></el-input>
+      <el-input v-model="form.family" placeholder="名族"></el-input>
     </el-col>
 
       </el-row>
       <el-row :gutter="20">
     <el-col :span="6" style="display: flex;">
-    <el-select  v-model="religionFaith" placeholder="宗教信仰">
+    <el-select  v-model="form.religionFaith" placeholder="宗教信仰">
     <el-option
       v-for="item in religionFaithList"
       :key="item.value"
@@ -515,7 +587,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-select  v-model="partyMembers" placeholder="政治面貌">
+      <el-select  v-model="form.partyMembers" placeholder="政治面貌">
     <el-option
       v-for="item in partyMembersList"
       :key="item.value"
@@ -526,19 +598,19 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="identificationNumber" placeholder="身份证号码"></el-input>
+      <el-input v-model="form.identificationNumber" placeholder="身份证号码"></el-input>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="socialSecurityNumber" placeholder="社会保障号码"></el-input>
+      <el-input v-model="form.socialSecurityNumber" placeholder="社会保障号码"></el-input>
     </el-col>
 
       </el-row>
       <el-row :gutter="20">
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="age" placeholder="年龄"></el-input>
+      <el-input v-model="form.age" placeholder="年龄"></el-input>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-select  v-model="deggree" placeholder="学历">
+      <el-select  v-model="form.deggree" placeholder="学历">
     <el-option
       v-for="item in deggreeList"
       :key="item.value"
@@ -549,7 +621,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-select  v-model="educationYears" placeholder="教育年限">
+      <el-select  v-model="form.educationYears" placeholder="教育年限">
     <el-option
       v-for="item in educationYearsList"
       :key="item.value"
@@ -560,7 +632,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-select  v-model="educationList" placeholder="学历专业">
+      <el-select  v-model="form.education" placeholder="学历专业">
     <el-option
       v-for="item in educationList"
       :key="item.value"
@@ -574,33 +646,25 @@ onMounted(() => {
       </el-row>
       <el-row :gutter="20">
     <el-col :span="6" style="display: flex;">
-      <el-select  v-model="RemunerationStandard" placeholder="薪酬标准">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-      >
-    </el-option>
-    </el-select>
+        <el-input v-model="RemunerationStandard" placeholder="薪酬标准" :disabled="true">
+        </el-input>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="openingBank" placeholder="开户行"></el-input>
+      <el-input v-model="form.openingBank" placeholder="开户行"></el-input>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="bankAccount" placeholder="账号"></el-input>
+      <el-input v-model="form.bankAccount" placeholder="账号"></el-input>
     </el-col>
-    <el-col :span="6" style="display: flex;">
+    <!-- <el-col :span="6" style="display: flex;">
       <el-input v-model="input" placeholder="登记人"></el-input>
-    </el-col>
-
+    </el-col> -->
       </el-row>
       <el-row :gutter="20">
     <el-col :span="6" style="display: flex;">
       <el-input v-model="time" placeholder="建档时间" :disabled="true"></el-input>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-select  v-model="good" placeholder="特长">
+      <el-select  v-model="form.good" placeholder="特长">
     <el-option
       v-for="item in goodList"
       :key="item.value"
@@ -611,22 +675,22 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="hobbys" placeholder="爱好"></el-input>
+      <el-input v-model="form.hobbys" placeholder="爱好"></el-input>
     </el-col>
       </el-row>
       <el-row>
         <el-col :span="20" style="display: flex;">
-          <el-input  type="textarea" :rows="2" v-model="personalHistory" placeholder="个人履历"></el-input>
+          <el-input  type="textarea" :rows="2" v-model="form.personalHistory" placeholder="个人履历"></el-input>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="20" style="display: flex;">
-          <el-input type="textarea" :rows="2" v-model="familyHistory" placeholder="家庭关系信息"></el-input>
+          <el-input type="textarea" :rows="2" v-model="form.familyHistory" placeholder="家庭关系信息"></el-input>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="20" style="display: flex;">
-          <el-input type="textarea" :rows="2" v-model="remarks" placeholder="备注"></el-input>
+          <el-input type="textarea" :rows="2" v-model="form.remarks" placeholder="备注"></el-input>
         </el-col>
       </el-row>
     </div>

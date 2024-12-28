@@ -50,6 +50,14 @@ export function createHumanResources(data: any) {
   })
 }
 
+/** 获取薪酬标准 */
+export function getSalaryStandard() {
+  return request<List>({
+    url: "/select/salaryStandard",
+    method: "get",
+  })
+}
+
 
 /** 上传图片 */
 export function uploadImage(data: any) {
