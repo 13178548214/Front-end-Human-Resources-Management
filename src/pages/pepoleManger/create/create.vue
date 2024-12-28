@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import {getSalaryStandard,getPrimaryStructure,getSecondaryStructure,getThirdStructure,getJobCategory,getJobName,createHumanResources} from '@/common/apis/pepole/index'
+import {updateApi,getAuditApi,getIsCreateApi,getSalaryStandard,getPrimaryStructure,getSecondaryStructure,getThirdStructure,getJobCategory,getJobName,createHumanResources} from '@/common/apis/pepole/index'
 import { ElForm, FormInstance,UploadRawFile } from 'element-plus';
 import { useUserStore } from '@/pinia/stores/user';
+import { router } from '@/router';
 
 const form = ref({
   /** 一级机构 */
@@ -130,6 +131,41 @@ const getJobNameList = async () => {
 const getRemunerationStandardList = async () => {
   const res = await getSalaryStandard()
   salaryStandard.value = res.data as any
+}
+
+/** 状态 */
+const status = ref()
+
+/** 获取判断状态 */
+const getStaus = async () => {
+  const res = await getIsCreateApi({userId: useUserStore().userId})
+  status.value = res.data
+}
+
+/** 获取数据 */
+const getData = async () => {
+  const res = await getAuditApi({ id: status.value?.id })
+  const data = res.data
+  imageUrl.value = data?.image
+  // 获取 form.value 的所有键
+  const formKeys = Object.keys(form.value);
+ // 创建一个新的对象，只包含 form.value 中存在的键
+ const filteredData = formKeys.reduce((acc, key) => {
+      if (data.hasOwnProperty(key)) {
+        acc[key] = data[key];
+      }
+      return acc;
+    }, {} as any);
+
+    // 使用 Object.assign 将过滤后的数据赋值给 form.value
+    Object.assign(form.value, filteredData);
+}
+
+/** 更新回显数据 */
+const updateData = async () => {
+ if(status.value?.create){
+  getData()
+ }
 }
 
 /** 职称列表 */
@@ -297,27 +333,6 @@ const goodList = [
 ]
 
 
-const options = [
-  {
-    value: '选项1',
-    label: '黄金糕'
-  },
-  {
-    value: '选项2',
-    label: '双皮奶'
-  },
-  {
-    value: '选项3',
-    label: '蚵仔煎'
-  },
-  {
-    value: '选项4',
-    label: '龙须面'
-  },
-  {
-    value: '选项5',
-  }
-]
 
 const imageUrl = ref('')
 
@@ -339,11 +354,10 @@ const beforeAvatarUpload = (file: UploadRawFile) => {
   return true;
 }
 
-const input = ref('')
-
 
 const submitForm = async() => {
-  if(!form.value.primaryStructureId){
+  if(!status.value?.create){
+    if(!form.value.primaryStructureId){
     ElMessage.error('请选择一级机构')
     return
   }
@@ -395,11 +409,20 @@ const submitForm = async() => {
     ElMessage.error('请上传照片')
     return
   }
-console.log(form.value);
-console.log(useUserStore().userId);
-
 await createHumanResources({...form.value,user:useUserStore().userId,image:imageUrl.value})
 ElMessage.success('创建成功')
+  }else{
+    await updateApi({...form.value,id:status.value?.id,image:imageUrl.value})
+    ElMessage.success('请等待审核')
+    await getStaus()
+  getPrimaryStructureList()
+  getSecondaryStructureList()
+  getThirdStructureList()
+  getJobCategoryList()
+  getJobNameList()
+  getRemunerationStandardList()
+  updateData()
+  }
 }
 
 // 获取当前日期并格式化为 yyyy-mm-dd
@@ -413,19 +436,24 @@ const getCurrentDateFormatted = () => {
 
 const time = ref(getCurrentDateFormatted())
 
-onMounted(() => {
+onMounted(async() => {
+ await getStaus()
   getPrimaryStructureList()
   getSecondaryStructureList()
   getThirdStructureList()
   getJobCategoryList()
   getJobNameList()
   getRemunerationStandardList()
+  updateData()
 })
 
 </script>
 
 <template>
   <div class="page">
+    <div :class="status?.pass ? 'title_1' : 'title_2'">
+      {{status?.pass ? '已通过审核' : '待审核中'}}
+    </div>
     <div style="display: flex;">
       <div class="left">
       <el-row :gutter="20">
@@ -695,7 +723,7 @@ onMounted(() => {
       </el-row>
     </div>
     <div class="footer">
-      <el-button type="primary" @click="submitForm">创建</el-button>
+      <el-button type="primary" @click="submitForm">{{status?.create ? '更新':'创建'}}</el-button>
     </div>
   </div>
 </template>
@@ -748,6 +776,18 @@ onMounted(() => {
   }
 </style>
 <style>
+.title_1{
+  margin-bottom: 10px;
+  font-size: 15px;
+  text-align: right;
+  color: #42bb09;
+}
+.title_2{
+  margin-bottom: 10px;
+  font-size: 15px;
+  text-align: right;
+  color: #e90000;
+}
 .avatar {
     width: 178px;
     height: 230px !important;

@@ -94,3 +94,21 @@ export function auditApi(data: any) {
     params: data
   })
 }
+
+/** 查询是否创建档案 */
+export function getIsCreateApi(data: any) {
+  return request<any>({
+    url: "/humanResources/checkUser",
+    method: "get",
+    params: data
+  })
+}
+
+/** 更新档案 */
+export function updateApi(data: any) {
+  return request<any>({
+    url: "/humanResources/update",
+    method: "put",
+    data
+  })
+}
