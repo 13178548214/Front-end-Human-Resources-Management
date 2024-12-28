@@ -73,7 +73,44 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/pages/pepoleManger/create/create.vue"),
         name: "create",
         meta: {
-          title: "创建人力资源",
+          title: "创建或更新人力资源",
+          svgIcon: "dashboard",
+          affix: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/audit",
+    component: Layouts,
+    redirect: "/pepoleManger",
+    children: [
+      {
+        path: "pepoleManger",
+        component: () => import("@/pages/pepoleManger/audit/audit.vue"),
+        name: "audit",
+        meta: {
+          title: "审核人力资源档案",
+          svgIcon: "dashboard",
+          affix: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/auditDeatil",
+    component: Layouts,
+    redirect: "/pepoleManger",
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: "pepoleManger",
+        component: () => import("@/pages/pepoleManger/audit/auditDeatil.vue"),
+        name: "auditDeatil",
+        meta: {
+          title: "审核人力资源档案详情",
           svgIcon: "dashboard",
           affix: true
         }

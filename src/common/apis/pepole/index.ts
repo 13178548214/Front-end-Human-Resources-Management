@@ -1,5 +1,6 @@
 import { request } from "@/http/axios"
-import {List} from "./type"
+import {List,audit} from "./type"
+
 
 /** 获取一级机构 */
 export function getPrimaryStructure() {
@@ -65,5 +66,31 @@ export function uploadImage(data: any) {
     url: "/humanResources/upload",
     method: "post",
     data
+  })
+}
+
+/** 查询待审核档案列表 */
+export function getWaitAuditApi() {
+  return request<audit>({
+    url: "/humanResources/getUnchecked",
+    method: "get",
+  })
+}
+
+/** 查询待审核档案详情 */
+export function getAuditApi(data: any) {
+  return request<any>({
+    url: "/humanResources/getHumanResources",
+    method: "get",
+    params: data
+  })
+}
+
+/** 审核档案 */
+export function auditApi(data: any) {
+  return request<any>({
+    url: "/humanResources/pass",
+    method: "put",
+    params: data
   })
 }
