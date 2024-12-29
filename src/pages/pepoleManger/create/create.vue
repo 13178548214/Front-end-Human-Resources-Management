@@ -7,25 +7,25 @@ import { router } from '@/router';
 
 const form = ref({
   /** 一级机构 */
-  primaryStructureId: '01',
+  primaryStructureId: '',
   /** 二级机构 */
-  secondaryStructureId: '02',
+  secondaryStructureId: '',
   /** 三级机构 */
-  tertiaryStructureId: '01',
+  tertiaryStructureId: '',
  /** 职称分类 */
- jobClassification:'01',
+ jobClassification:'',
 /** 职称名字 */
-jobName :'01',
+jobName :'',
 /** 职称 */
- jobTitle :'01',
+ jobTitle :'',
 /** 名字 */
- name :'欧哟',
+ name :'',
 /** 邮件 */
  email :'',
 /** 性别 */
  gender :'',
 /** 电话号码 */
- phoneNumber :'13178548214',
+ phoneNumber :'',
 /** qq号码 */
  qqNumber :'',
 /** 手机 */
@@ -35,13 +35,13 @@ jobName :'01',
 /** 邮编 */
  postcode :'',
 /** 国籍 */
- country  :'中国',
+ country  :'',
 /** 出生地 */
  nationality  :'',
 /** 生日 */
  birthDate :'',
 /** 名族 */
- family :'汉族',
+ family :'',
 /** 宗教信仰 */
  religionFaith :'',
 /** 政治面貌 */
@@ -51,13 +51,13 @@ jobName :'01',
 /** 社保卡号 */
  socialSecurityNumber:'',
 /** 年龄 */
- age :'18',
+ age :'',
 /** 学历 */
- deggree :'本科',
+ deggree :'',
 /** 教育年限 */
- educationYears :'9',
+ educationYears :'',
 /** 专业学历 */
- education :'计算机',
+ education :'',
  /** 开户行 */
  openingBank :'',
 /** 账号 */

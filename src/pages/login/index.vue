@@ -8,6 +8,7 @@ import { Key, Loading, Lock, Picture, User } from "@element-plus/icons-vue"
 import { loginApi } from "./apis"
 import Owl from "./components/Owl.vue"
 import { useFocus } from "./composables/useFocus"
+import {registerApi} from "../../common/apis/pepole/index"
 
 const router = useRouter()
 
@@ -43,7 +44,7 @@ const loginFormRules: FormRules = {
   ],
 }
 
-/** 登录 */
+/** 登录或者登录 */
 function handleLogin() {
   loginFormRef.value?.validate((valid) => {
     if (!valid) {
@@ -51,7 +52,8 @@ function handleLogin() {
       return
     }
     loading.value = true
-    loginApi(loginFormData).then(( {data} ) => {
+    if(!enorll.value){
+      loginApi(loginFormData).then(( {data} ) => {
       userStore.setToken(data.token)
       userStore.setUserId(data.id)
       router.push("/")
@@ -60,7 +62,26 @@ function handleLogin() {
     }).finally(() => {
       loading.value = false
     })
+    }else{
+      registerApi(loginFormData).then(( {data} ) => {
+       enorll.value = false
+       ElMessage.success("注册成功，请重新登录")
+    }).catch(() => {
+      loginFormData.password = ""
+    }).finally(() => {
+      loading.value = false
+    })
+    }
   })
+}
+
+/** 注册 */
+const enorll = ref(false)
+
+
+/** 去注册 */
+const toEnorll = () => {
+  enorll.value = true
 }
 
 
@@ -73,7 +94,10 @@ function handleLogin() {
     <Owl :close-eyes="isFocus" />
     <div class="login-card">
       <div class="title">
-        <img src="@@/assets/images/layouts/logo-text-2.png">
+        人力资源系统
+      </div>
+      <div class="top">
+        <div class="enorrl" @click="toEnorll" v-if="!enorll">去注册</div>
       </div>
       <div class="content">
         <el-form ref="loginFormRef" :model="loginFormData" :rules="loginFormRules" @keyup.enter="handleLogin">
@@ -101,7 +125,7 @@ function handleLogin() {
             />
           </el-form-item>
           <el-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin">
-            登 录
+            {{enorll ? '注 册' : '登 录'}}
           </el-button>
         </el-form>
       </div>
@@ -135,8 +159,16 @@ function handleLogin() {
       justify-content: center;
       align-items: center;
       height: 150px;
-      img {
-        height: 100%;
+      font-size: 50px;
+    }
+    .top{
+      display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 50px;
+    color: #9797ff;
+      .enorrl {
+        cursor: pointer;
       }
     }
     .content {

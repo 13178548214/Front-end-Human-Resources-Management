@@ -40,6 +40,9 @@ function createInstance() {
         case 200:
           // 本系统采用 code === 0 来表示没有业务错误
           return apiData
+          case 400:
+            ElMessage.error(apiData.data || "Error")
+            return Promise.reject(new Error("Error"))
         case 401:
           // Token 过期时
           return logout()

@@ -140,3 +140,12 @@ export function deleteOrRecoveryApi(data: any) {
   })
 }
 
+/** 去注册 */
+export function registerApi(data: any) {
+  return request<any>({
+    url: "/login/register",
+    method: "post",
+    data
+  })
+}
+
