@@ -80,7 +80,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       }
     ]
   },
-  {
+/*   {
     path: "/audit",
     component: Layouts,
     redirect: "/pepoleManger",
@@ -96,7 +96,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       }
     ]
-  },
+  }, */
   {
     path: "/find",
     component: Layouts,
@@ -129,7 +129,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: "审核人力资源档案详情",
           svgIcon: "dashboard",
-          affix: true
+          affix: true,
         }
       }
     ]
@@ -260,7 +260,7 @@ export const constantRoutes: RouteRecordRaw[] = [
  * @description 必须带有唯一的 Name 属性
  */
 export const dynamicRoutes: RouteRecordRaw[] = [
-  {
+/*   {
     path: "/permission",
     component: Layouts,
     redirect: "/permission/page-level",
@@ -294,7 +294,49 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         }
       }
     ]
-  }
+  }, */
+    {
+      path: "/delete",
+      component: Layouts,
+      redirect: "/pepoleManger",
+      meta: {
+        roles: ["personalManager"]
+      },
+      children: [
+        {
+          path: "pepoleManger",
+          component: () => import("@/pages/pepoleManger/delete/delete.vue"),
+          name: "delete",
+          meta: {
+            title: "删除或恢复人力资源档案",
+            svgIcon: "dashboard",
+            affix: true,
+            roles: ["personalManager"]
+          }
+        }
+      ]
+    },
+    {
+      path: "/audit",
+      component: Layouts,
+      redirect: "/pepoleManger",
+      meta: {
+        roles: ["personalManager"]
+      },
+      children: [
+        {
+          path: "pepoleManger",
+          component: () => import("@/pages/pepoleManger/audit/audit.vue"),
+          name: "audit",
+          meta: {
+            title: "审核人力资源档案",
+            svgIcon: "dashboard",
+            affix: true,
+            roles: ["personalManager"]
+          }
+        }
+      ]
+    },
 ]
 
 /** 路由实例 */

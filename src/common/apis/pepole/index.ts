@@ -122,3 +122,21 @@ export function getApi(data: any) {
   })
 }
 
+/** 获取所有档案 */
+export function getAllApi(data?: any) {
+  return request<any>({
+    url: "/humanResources",
+    method: "get",
+    params:data
+  })
+}
+
+/** 删除或恢复档案 */
+export function deleteOrRecoveryApi(data: any) {
+  return request<any>({
+    url: "/humanResources/deleteOrRecovery",
+    method: "post",
+    data
+  })
+}
+

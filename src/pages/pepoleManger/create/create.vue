@@ -411,8 +411,16 @@ const submitForm = async() => {
   }
 await createHumanResources({...form.value,user:useUserStore().userId,image:imageUrl.value})
 ElMessage.success('创建成功')
+await getStaus()
+  getPrimaryStructureList()
+  getSecondaryStructureList()
+  getThirdStructureList()
+  getJobCategoryList()
+  getJobNameList()
+  getRemunerationStandardList()
+  updateData()
   }else{
-    await updateApi({...form.value,id:status.value?.id,image:imageUrl.value})
+    await updateApi({...form.value,id:status.value?.id,image:imageUrl.value,deleted:false})
     ElMessage.success('请等待审核')
     await getStaus()
   getPrimaryStructureList()
@@ -436,6 +444,14 @@ const getCurrentDateFormatted = () => {
 
 const time = ref(getCurrentDateFormatted())
 
+const canUpdate = computed(() => {
+  if(status.value?.create && !status.value?.deleted){
+    return true
+  }else{
+    return false
+  }
+})
+
 onMounted(async() => {
  await getStaus()
   getPrimaryStructureList()
@@ -451,14 +467,17 @@ onMounted(async() => {
 
 <template>
   <div class="page">
-    <div :class="status?.pass ? 'title_1' : 'title_2'">
+    <div :class="status?.pass ? 'title_1' : 'title_2'" v-if="status?.create && !status?.deleted">
       {{status?.pass ? '已通过审核' : '待审核中'}}
+    </div>
+    <div class="title_2" v-if="status?.deleted">
+      已被删除
     </div>
     <div style="display: flex;">
       <div class="left">
       <el-row :gutter="20">
     <el-col :span="8" style="display: flex;">
-    <el-select  v-model="form.primaryStructureId" placeholder="一级机构">
+    <el-select  v-model="form.primaryStructureId" placeholder="一级机构" :disabled="canUpdate">
     <el-option
       v-for="item in primaryStructure"
       :key="item.value"
@@ -469,7 +488,7 @@ onMounted(async() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="form.secondaryStructureId" placeholder="二级机构">
+      <el-select  v-model="form.secondaryStructureId" placeholder="二级机构" :disabled="canUpdate">
     <el-option
       v-for="item in secondaryStructure"
       :key="item.value"
@@ -480,7 +499,7 @@ onMounted(async() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="form.tertiaryStructureId" placeholder="三级机构">
+      <el-select  v-model="form.tertiaryStructureId" placeholder="三级机构" :disabled="canUpdate">
     <el-option
       v-for="item in thirdStructure"
       :key="item.value"
@@ -494,7 +513,7 @@ onMounted(async() => {
       </el-row>
       <el-row :gutter="20">
     <el-col :span="8" style="display: flex;">
-    <el-select  v-model="form.jobClassification" placeholder="职位分类">
+    <el-select  v-model="form.jobClassification" placeholder="职位分类" :disabled="canUpdate">
     <el-option
       v-for="item in jobCategory"
       :key="item.value"
@@ -505,7 +524,7 @@ onMounted(async() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="form.jobName" placeholder="职位名称">
+      <el-select  v-model="form.jobName" placeholder="职位名称" :disabled="canUpdate">
     <el-option
       v-for="item in jobNameList"
       :key="item.value"
@@ -516,7 +535,7 @@ onMounted(async() => {
     </el-select>
     </el-col>
     <el-col :span="8" style="display: flex;">
-      <el-select  v-model="form.jobTitle" placeholder="职称">
+      <el-select  v-model="form.jobTitle" placeholder="职称" :disabled="canUpdate">
     <el-option
       v-for="item in jobList"
       :key="item.value"
@@ -722,8 +741,11 @@ onMounted(async() => {
         </el-col>
       </el-row>
     </div>
-    <div class="footer">
+    <div class="footer" v-if="!status?.deleted">
       <el-button type="primary" @click="submitForm">{{status?.create ? '更新':'创建'}}</el-button>
+    </div>
+    <div class="footer" v-if="status?.deleted">
+      <el-button type="primary" @click="submitForm">重新创建</el-button>
     </div>
   </div>
 </template>

@@ -31,15 +31,15 @@ export const useUserStore = defineStore("user", () => {
     username.value = data.username
     const role = ref<string>("")
     switch (data.role) {
-      case 1:
+      case '1':
        role.value = "personalStaff"
-      case 25:
+      case '25':
         role.value = "salaryStaff"
         break
-        case 75:
+        case '75':
           role.value = "personalStaff"
         break
-        case 100:
+        case '100':
           role.value = "personalManager"
           break
           default:
