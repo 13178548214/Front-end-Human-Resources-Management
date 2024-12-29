@@ -98,6 +98,23 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/find",
+    component: Layouts,
+    redirect: "/pepoleManger",
+    children: [
+      {
+        path: "pepoleManger",
+        component: () => import("@/pages/pepoleManger/find/find.vue"),
+        name: "find",
+        meta: {
+          title: "查询人力资源档案",
+          svgIcon: "dashboard",
+          affix: true
+        }
+      }
+    ]
+  },
+  {
     path: "/auditDeatil",
     component: Layouts,
     redirect: "/pepoleManger",

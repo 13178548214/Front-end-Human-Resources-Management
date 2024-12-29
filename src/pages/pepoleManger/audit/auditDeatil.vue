@@ -6,7 +6,8 @@ import { useUserStore } from '@/pinia/stores/user';
 
 const route = useRoute();
 const auditId = route.query.id as string; // 获取路由参数 id
-console.log(auditId,'auditId');
+const look = route.query.see
+console.log(look,'look');
 
 
 const form = ref({
@@ -142,6 +143,7 @@ const getData = async () => {
   const res = await getAuditApi({ id: auditId })
   const data = res.data
   imageUrl.value = data?.image
+  time.value = data?.createdAt
   // 获取 form.value 的所有键
   const formKeys = Object.keys(form.value);
  // 创建一个新的对象，只包含 form.value 中存在的键
@@ -659,7 +661,7 @@ onMounted(() => {
     </el-select>
     </el-col>
     <el-col :span="6" style="display: flex;">
-      <el-input v-model="form.hobbys" placeholder="爱好" :disabled="true"></el-input>
+      <el-input v-model="form.hobbys" placeholder="爱好" ></el-input>
     </el-col>
       </el-row>
       <el-row>
@@ -678,7 +680,7 @@ onMounted(() => {
         </el-col>
       </el-row>
     </div>
-    <div class="footer">
+    <div class="footer" v-if="!look">
       <el-button type="primary" @click="submitForm">审核通过</el-button>
     </div>
   </div>

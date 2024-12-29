@@ -112,3 +112,13 @@ export function updateApi(data: any) {
     data
   })
 }
+
+/** 查询档案 */
+export function getApi(data: any) {
+  return request<any>({
+    url: "/humanResources/getSelect",
+    method: "post",
+    data
+  })
+}
+
